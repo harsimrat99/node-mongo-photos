@@ -1,0 +1,54 @@
+<br>
+<a href="/dashboard" class="btn btn-secondary">Dashboard</a>
+<a href="/users/logout" class="btn btn-secondary">Logout</a>
+<br><br>
+<%console.log ('images:' + images.length)%>
+<% for (var i=0; i < images.length; i += 3) { console.log ('images:' + images.length) %>
+<div class="row" id="filler">       
+  <% if (!(typeof images[i] === 'undefined')) {%>
+    <div class="column" style="background-color:#bbb;">
+      <img id="" style="padding-left: 70px; background-color:#bbb; width: 300px;" src="data:image/png;base64,<%= images[i].data %>">
+      <br>
+      <center><form action="/photos/delete" method="POST"><button name="photo_id" type="submit" value="<%= images[i].id%>">Delete</button></form></center>
+    </div>   
+   <%}%>
+   <% if (!(typeof images[i + 1] === 'undefined')) {%>      
+    <div class="column" style="background-color:#bbb;">
+      <img id="" style="padding-left: 70px; background-color:#bbb; width: 300px;" src="data:image/png;base64,<%= images[i + 1].data %>">
+      <center><form action="/photos/delete" method="POST"><button name="photo_id" type="submit" value="<%= images[i + 1].id%>">Delete</button></form></center>
+    </div>
+   <% }%>
+  <% if (!(typeof images[i + 2] === 'undefined')) {%>    
+    <div class="column" style="background-color:#bbb; ">
+      <img id="" style="padding-left: 70px; background-color:#bbb; width: 300px;" src="data:image/png;base64,<%= images[i + 2].data %>">
+      <center><form action="/photos/delete" method="POST"><button name="photo_id" type="submit" value="<%= images[i + 2].id%>">Delete</button></form></center>
+    </div> 
+  <% }%>
+</div>
+<br>
+<% } %>
+
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Create three equal columns that floats next to each other */
+  .column {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+    height: 300px;
+    /* Should be removed. Only for demonstration */
+  }
+
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+
+</style>

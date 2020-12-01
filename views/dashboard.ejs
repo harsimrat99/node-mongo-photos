@@ -1,0 +1,20 @@
+<h1 class="mt-4">Dashboard</h1>
+<p class="lead mb-3">Welcome <%= user.name %></p>
+
+<form action="/photos/create" enctype="multipart/form-data" method="POST">
+    <div class="input-group">    
+        <div class="input-group-prepend">
+            <input type="submit" value="Upload Photo" />
+        </div>
+        <div class="custom-file">
+        <input type="file" class="custom-file-input" id="image" 
+            aria-describedby="inputGroupFileAddon01" name="image" accept="image/*" />
+        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+        </div>
+    </div>       
+</form>
+
+<br>
+
+<a href="/photos/show" class="btn btn-secondary">Show</a>
+<a href="/users/logout" class="btn btn-secondary">Logout</a>
