@@ -14,7 +14,7 @@ var upload = multer({ storage: storage })
 //show
 router.get('/show', ensureAuthenticated, (req, res) => {  
   
-  datas = Photos.find({ "user": req.user._id }).limit(10).exec().then((data) => {
+  datas = Photos.find({ "user": req.user._id }).limit(1000000).exec().then((data) => {
 
     res.render('show', {images: data});  
     
@@ -23,6 +23,38 @@ router.get('/show', ensureAuthenticated, (req, res) => {
   return
 
 });
+
+//show
+router.get('/showAll', ensureAuthenticated, (req, res) => {  
+  
+  datas = Photos.find({ "user": req.user._id }).limit(1000000).exec().then((data) => {
+
+    res.render('showAll', {images: data});  
+    
+  })  
+
+  return
+
+});
+
+//donwload
+router.get('/download/:id', ensureAuthenticated, (req, res)=>{
+
+  var id = req.params.id
+  
+  if (!id){
+    res.redirect('/photos/show');
+  }
+
+  Photos.findOne({"_id": id}).exec().then((result) =>{
+
+    var buf = Buffer.from(result.data, 'base64');
+    res.writeHead(200, [['Content-Type', 'image/png']]);
+    res.end(buf)
+
+  })
+
+})
 
 //create
 router.post('/create', upload.single('image'), ensureAuthenticated, (req, res) => {
@@ -69,13 +101,29 @@ router.post('/delete', ensureAuthenticated,(req, res) => {
 
   try {
     var id = req.body.photo_id;
-    console.log(id)
+   
     datas = Photos.remove({ "_id" : id }).then((data) => {
       res.redirect('/photos/show')          
     })  
   } catch(e) {
-    console.log(e)
+    
     res.redirect('/photos/show')
+  }
+
+});
+
+//delete from the list 
+router.post('/deleteList', ensureAuthenticated,(req, res) => {
+
+  try {
+    var id = req.body.photo_id;
+   
+    datas = Photos.remove({ "_id" : id }).then((data) => {
+      res.redirect('/photos/showAll')          
+    })  
+  } catch(e) {
+   
+    res.redirect('/photos/showAll')
   }
 
 });

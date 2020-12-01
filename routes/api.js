@@ -19,7 +19,7 @@ router.post('/login', (req, res, next) => {
     username = req.body.username;
     password = req.body.password;
 
-    console.log(req.body.password)
+    
 
     try {
 
@@ -47,7 +47,7 @@ router.post('/login', (req, res, next) => {
 
                     if (bunty) {
 
-                        console.log(result)
+                       
 
                         res.json({
                             "token": jwt.sign({ user: result._id }, process.env.SECRET, { expiresIn: 86400 })
@@ -67,7 +67,7 @@ router.post('/login', (req, res, next) => {
 
     } catch (e) {
 
-        console.log(e)
+  
 
     }
 
@@ -79,7 +79,7 @@ router.post('/create', upload.single('image'),authenticateToken, (req, res) => {
 
     const body = req.file;  
 
-    console.log(req.user)
+   
     
     if (!body) {
   
@@ -123,7 +123,7 @@ function authenticateToken(req, res, next) {
   jwt.verify(authHeader,  process.env.SECRET, (err, user) => {    
     if (err) return res.sendStatus(403)
     req.user = user
-    console.log('authenticated')
+    
     next()
   })
 }

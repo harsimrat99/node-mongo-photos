@@ -2,8 +2,7 @@
 <a href="/dashboard" class="btn btn-secondary">Dashboard</a>
 <a href="/users/logout" class="btn btn-secondary">Logout</a>
 <br><br>
-<%console.log ('images:' + images.length)%>
-<% for (var i=0; i < images.length; i += 3) { console.log ('images:' + images.length) %>
+<% for (var i=0; i < 10; i += 3) { %>
 <div class="row" id="filler">       
   <% if (!(typeof images[i] === 'undefined')) {%>
     <div class="column" style="background-color:#bbb;">
