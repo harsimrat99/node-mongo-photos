@@ -63,5 +63,5 @@ app.use('/photos', require('./routes/photos.js'));
 app.use('/api', require('./routes/api.js'));
 
 const PORT = process.env.PORT || 5000;
-
+app.use(express.static('./views'))
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
