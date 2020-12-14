@@ -4,8 +4,10 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
+var morgan = require('morgan')
 
 const app = express();
+app.use(morgan('combined'))
 
 // Passport Config
 require('./config/passport')(passport);
@@ -29,6 +31,7 @@ var db = mongoose;
 
 // Express body parser
 app.use(express.urlencoded({ extended: true }));
+var bodyParser = require('body-parser')
 
 // Express session
 app.use(
@@ -42,7 +45,8 @@ app.use(
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.json())
+app.use(express.json());
+app.use(bodyParser.raw())
 
 // Connect flash
 app.use(flash());
@@ -71,5 +75,6 @@ app.use(function(req, res) {
 
 // Handle 500
 app.use(function(error, req, res, next) {
+    console.log(error)
     res.render('error')
 });
