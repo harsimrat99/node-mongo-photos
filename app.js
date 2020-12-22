@@ -5,6 +5,15 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
 var morgan = require('morgan')
+const redis = require('redis')
+
+var RedisStore = require('connect-redis')(session)
+var redisClient = redis.createClient ({
+    host : process.env.HOST_REDIS,
+    port : '18438',
+    password: process.env.PASSWORD_REDIS
+});
+
 
 const app = express();
 app.use(morgan('combined'))
@@ -34,13 +43,12 @@ app.use(express.urlencoded({ extended: true }));
 var bodyParser = require('body-parser')
 
 // Express session
-app.use(
-    session({
-        secret: 'secret',
-        resave: true,
-        saveUninitialized: true
-    })
-);
+app.use(session({
+    store: new RedisStore({ client: redisClient }),
+    secret: process.env.SECRET_SESSION,
+    resave: false,
+    saveUninitialized: true
+}))
 
 // Passport middleware
 app.use(passport.initialize());
