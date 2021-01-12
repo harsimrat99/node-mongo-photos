@@ -74,15 +74,25 @@
   </div>
   <center>
     <div id="d">
-      <%var  x = parseInt(Math.random()*100,10);%>
-      <%if (x % 2 == 0) {%>
-      <script src="./sketch2.js"></script>
-      <%}%>   
-      <%if (x % 2 !== 0)  {%>
-      <script src="./sketch.js"></script>
-      <%}%>
-    </div>    
-  </center> 
-  <a href="#about"></a>
+      <%var x=parseInt(Math.random()*100,10);%>
+        <%if (x % 2==0) {%>
+          <script src="./sketch2.js"></script>
+          <%}%>
+            <%if (x % 2 !==0) {%>
+              <script src="./sketch.js"></script>
+              <%}%>
+    </div>
+  </center>
+
+  <footer class="pt-4 my-md-5 pt-md-5">
+    <div class="row">
+      <div class="col-12 col-md">
+        <small class="d-block mb-3 text-muted">© 2020-2021. Harsimrat Singh Wadhawan. </small>
+      </div>
+    </div>
+  </footer>
+
+
 </body>
+
 </html>
