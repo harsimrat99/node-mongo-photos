@@ -35,6 +35,7 @@ mongoose
 // EJS
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
+app.set('layout', 'layout');
 
 var db = mongoose;
 
