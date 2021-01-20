@@ -25,18 +25,20 @@
   <title>Harsimrat</title>
 
   <style>
-    #footer {
-      position: absolute;
+    .footer {
+      position: fixed;
+      left: 0;
       bottom: 0;
       width: 100%;
-      height: 2.5rem;
-      /* Footer height */
+      background-color: red;
+      color: white;
+      text-align: center;
     }
 
     #page-container {
-      position: relative;      
+      position: relative;
       width: 65%;
-      min-height: 100%;      
+      min-height: 100%;
       font-family: 'Helvetica', 'Arial', 'Sans-Serif';
       position: relative;
       margin: 0 auto;
@@ -54,16 +56,13 @@
 <body>
 
   <%- include('partials/navbar.ejs') %>
-
     <div id="page-container">
       <div id="content-wrap">
         <%- body %>
       </div>
     </div>
-    
     <%- include('partials/footer.ejs') %>
 
 </body>
-
 
 </html>
