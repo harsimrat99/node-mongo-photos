@@ -11,26 +11,26 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.0.0",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "connect-flash": "^0.1.1",
-    "connect-redis": "^5.0.0",
-    "ejs": "^2.6.1",
-    "express": "^4.16.4",
-    "express-ejs-layouts": "^2.5.0",
-    "express-session": "^1.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.7.5",
-    "morgan": "^1.10.0",
-    "multer": "^1.4.2",
-    "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
-    "redis": "^3.0.2",
-    "sharp": "^0.26.3"
+    "bcrypt": "*",
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "connect-flash": "*",
+    "connect-redis": "*",
+    "ejs": "*",
+    "express": "*",
+    "express-ejs-layouts": "*",
+    "express-session": "*",
+    "jsonwebtoken": "*",
+    "mongoose": "*",
+    "morgan": "*",
+    "multer": "*",
+    "passport": "*",
+    "passport-jwt": "*",
+    "passport-local": "*",
+    "redis": "*",
+    "sharp": "*"
   },
   "devDependencies": {
-    "nodemon": "^1.18.9"
+    "nodemon": "*"
   }
 }
