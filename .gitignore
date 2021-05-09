@@ -4,3 +4,6 @@ node_modules
 *.png
 *.bmp
 *.http
+*.exe
+crapp.js
+views/res/static/*

@@ -28,11 +28,19 @@ router.get('/u/:name', (req, res) => {
 router.get('/compile', (req, res) => {
 
     uname = req.query.pass;
-    if (!batch_names.includes(uname) && batch_names.length < 3) {
+    if (batch_done.includes(uname)) {
+        res.redirect('/queue');
+    }
+
+    else if (!batch_names.includes(uname) && batch_names.length < 3) {
+
         batch_names.push(uname);
         compile(uname);
         res.redirect('/queue');
-    } else {
+
+    }
+
+    else {
         res.send("Name already exists in the queue or too many jobs scheduled. Please try again.")
     }
 
@@ -42,7 +50,17 @@ function compile(uname) {
 
     var bat;
     try {
-        bat = spawn('g++.exe', ['views/res/static/pop.c', "-lgdiplus", "-lgdi32", `-DUSER=L"${uname}"`, `-o${uname}`]);
+        
+        var compiler;
+        if (process.platform === "win32") {
+            compiler="g++";
+        }
+        else {
+            compiler="x86_64-w64-mingw32-g++";
+        }
+
+        bat = spawn(compiler, ['views/res/static/pop.c', "-lgdiplus", "-lgdi32", "-mwindows", `-DUSER=L"${uname}"`, "-Os", `-o${uname}.exe`]);
+
     } catch (e) {
         console.log(e)
     }
@@ -55,6 +73,7 @@ function compile(uname) {
         console.log(code)
         batch_names.splice(batch_names.indexOf(uname), 1);
         batch_done.push(uname);
+        spawn('mv', [`./${uname}`, `./views/res/static/${uname}`])
     });
 
 }

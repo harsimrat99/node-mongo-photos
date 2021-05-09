@@ -61,7 +61,7 @@ app.use(bodyParser.raw())
 app.use(flash());
 
 // Global variables
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
@@ -76,14 +76,62 @@ app.use('/api', require('./routes/api.js'));
 
 const PORT = process.env.PORT || 5000;
 app.use(express.static('./views'))
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
-// Handle 404
-app.use(function(req, res) {
-    res.render('error')
-});
 
-// Handle 500
-app.use(function(error, req, res, next) {
-    console.log(error)
-    res.render('error')
-});
+if (process.env.DEBUG) {
+
+    app.listen(PORT, console.log(`Server started on port ${PORT}`));
+    // Handle 404
+    app.use(function (req, res) {
+        res.render('error')
+    });
+
+    // Handle 500
+    app.use(function (error, req, res, next) {
+        console.log(error)
+        res.render('error')
+    });
+
+}
+
+else {
+
+    const http = require('http');
+    const https = require('https');
+    const fs = require('fs');
+
+    const privateKey = fs.readFileSync(process.env.PRIVATE_KEY_PATH, 'utf8');
+    const certificate = fs.readFileSync(process.env.CERT_KEY_PATH, 'utf8');
+    const ca = fs.readFileSync(process.env.CHAIN_PATH, 'utf8');
+
+    const credentials = {
+        key: privateKey,
+        cert: certificate,
+        ca: ca
+    };
+
+    // Handle 404
+    app.use(function (req, res) {
+        res.render('error')
+    });
+
+    // Handle 500
+    app.use(function (error, req, res, next) {
+        console.log(error)
+        res.render('error')
+    });
+
+
+    // Starting both http & https servers
+    const httpServer = http.createServer(function (req, res) {
+        res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+        res.end();
+    }).listen(80);
+
+    const httpsServer = https.createServer(credentials, app);
+
+    httpsServer.listen(443, () => {
+        console.log('HTTPS Server running on port 443');
+    });
+
+
+}
