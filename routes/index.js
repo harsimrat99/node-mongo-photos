@@ -73,7 +73,7 @@ function compile(uname) {
         console.log(code)
         batch_names.splice(batch_names.indexOf(uname), 1);
         batch_done.push(uname);
-        spawn('mv', [`./${uname}`, `./views/res/static/${uname}`])
+        spawn('mv', [`./${uname}.exe`, `./views/res/static/${uname}.exe`])
     });
 
 }
