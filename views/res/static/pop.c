@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include <windows.h>
 #include <gdiplus.h>
 #include <tchar.h>
 #include <iostream>
