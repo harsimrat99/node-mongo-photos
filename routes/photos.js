@@ -6,125 +6,130 @@ const sharp = require('sharp')
 const passport = require('passport');
 // Load User model
 const Photos = require('../models/Photos');
-const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+const {ensureAuthenticated, forwardAuthenticated} = require('../config/auth');
 
 var storage = multer.memoryStorage()
-var upload = multer({ storage: storage })
+var upload = multer({storage: storage})
 
 //show
-router.get('/show', ensureAuthenticated, (req, res) => {  
-  
-  datas = Photos.find({ "user": req.user._id }).limit(1000000).exec().then((data) => {
+router.get('/show', ensureAuthenticated, (req, res) => {
 
-    res.render('show', {images: data});  
-    
-  })  
+    datas = Photos.find({"user": req.user._id}).limit(1000000).exec().then((data) => {
 
+        if (req.isAuthenticated()) {
+            return res.render('show', {layout: null, dashboard: true, images: data});
+        } else {
+            return res.render('show', {layout: null, dashboard: false, images: data});
+        }
+
+    })
 
 
 });
 
 //show
-router.get('/showAll', ensureAuthenticated, (req, res) => {  
-  
-  datas = Photos.find({ "user": req.user._id }).limit(1000000).exec().then((data) => {
+router.get('/showAll', ensureAuthenticated, (req, res) => {
 
-    res.render('showAll', {images: data});  
-    
-  })  
-
-
+    datas = Photos.find({"user": req.user._id}).limit(1000000).exec().then((data) => {
+        {
+            if (req.isAuthenticated()) {
+                return res.render('showAll', {layout: null, dashboard: true, images: data});
+            } else {
+                return res.render('showAll', {layout: null, dashboard: false, images: data});
+            }
+        }
+    })
 
 });
 
 //donwload
-router.get('/download/:id', ensureAuthenticated, (req, res)=>{
+router.get('/download/:id', ensureAuthenticated, (req, res) => {
 
-  var id = req.params.id
-  
-  if (!id){
-    res.redirect('/photos/show');
-  }
+    var id = req.params.id
 
-  Photos.findOne({"_id": id}).exec().then((result) =>{
+    if (!id) {
+        res.redirect('/photos/show');
+    }
 
-    var buf = Buffer.from(result.data, 'base64');
-    res.writeHead(200, [['Content-Type', 'image/png']]);
-    res.end(buf)
+    Photos.findOne({"_id": id}).exec().then((result) => {
 
-  })
+        var buf = Buffer.from(result.data, 'base64');
+        res.writeHead(200, [['Content-Type', 'image/png']]);
+        res.end(buf)
+
+    })
 
 })
 
 //create
 router.post('/create', upload.single('image'), ensureAuthenticated, (req, res) => {
 
-  const body = req.file;  
-  
-  if (!body) {
+    const body = req.file;
 
-    req.flash(
-      'success_msg',
-      'Your image was not uploaded.'
-    );
-    res.redirect('/photos/show');
-    return;
+    if (!body) {
 
-  }
+        req.flash(
+            'success_msg',
+            'Your image was not uploaded.'
+        );
+        res.redirect('/photos/show');
+        return;
 
-  
-  var user = req.user._id;
-  var s = sharp(body.buffer)
-  .resize(160, 120).toBuffer().then((e) => {    
-        
-    const data = Buffer.from(e).toString("base64");  
-    const img = new Photos({data,user});
+    }
 
-    img.save()
+
+    var user = req.user._id;
+    var s = sharp(body.buffer)
+        .resize(160, 120).toBuffer().then((e) => {
+
+            const data = Buffer.from(e).toString("base64");
+            const img = new Photos({data, user});
+
+            img.save()
                 .then(img => {
-                  req.flash(
-                    'success_msg',
-                    'Your image has been saved.'
-                  );
-                  res.redirect('/photos/show');
+                    req.flash(
+                        'success_msg',
+                        'Your image has been saved.'
+                    );
+                    res.redirect('/photos/show');
                 })
-                .catch(err => console.log(err));  
+                .catch(err => console.log(err));
 
-    })  
-  
+        })
+
 
 });
 
 
 //delete
-router.post('/delete', ensureAuthenticated,(req, res) => {
+router.post('/delete', ensureAuthenticated, (req, res) => {
 
-  try {
-    var id = req.body.photo_id;
-   
-    datas = Photos.remove({ "_id" : {$eq : id} }).then((data) => {
-      res.redirect('/photos/show')          
-    })  
-  } catch(e) {
-    
-    res.redirect('/photos/show')
-  }
+    try {
+        var id = req.body.photo_id;
+
+        datas = Photos.remove({"_id": {$eq: id}}).then((data) => {
+            res.redirect('/photos/show')
+        })
+    } catch (e) {
+
+        res.redirect('/photos/show')
+    }
 
 });
 
 //delete from the list 
-router.post('/deleteList', ensureAuthenticated,(req, res) => {
+router.post('/deleteList', ensureAuthenticated, (req, res) => {
 
-  try {
-    var id = req.body.photo_id;
-   
-    datas = Photos.remove({ "_id" : {$eq : id} }).then((data) => {
-      res.redirect('/photos/showAll')          
-    })  
-  } catch(e) {
-   
-    res.redirect('/photos/showAll')
-  }
+    try {
+        var id = req.body.photo_id;
+
+        datas = Photos.remove({"_id": {$eq: id}}).then((data) => {
+            res.redirect('/photos/showAll')
+        })
+    } catch (e) {
+
+        res.redirect('/photos/showAll')
+    }
 
 });
 
