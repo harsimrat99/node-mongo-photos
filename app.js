@@ -131,7 +131,7 @@ else {
 
     // Starting both http & https servers
     const httpServer = http.createServer(function (req, res) {
-        res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+        res.writeHead(301, { "Location": "https://" + process.env.DOMAIN_NAME + req.url });
         res.end();
     }).listen(80);
 

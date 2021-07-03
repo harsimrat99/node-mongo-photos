@@ -105,4 +105,4 @@ window.addEventListener("resize", resize);
 var redraw = document.getElementById("redraw");
 function resize (event) {	
 	redraw();
-};
+}

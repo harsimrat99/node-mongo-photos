@@ -20,7 +20,7 @@ router.get('/show', ensureAuthenticated, (req, res) => {
     
   })  
 
-  return
+
 
 });
 
@@ -33,7 +33,7 @@ router.get('/showAll', ensureAuthenticated, (req, res) => {
     
   })  
 
-  return
+
 
 });
 

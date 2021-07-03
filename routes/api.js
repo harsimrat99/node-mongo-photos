@@ -32,7 +32,7 @@ router.post('/login', (req, res, next) => {
 
         }
 
-        User.findOne({"email": {$eq:username}}).exec().then((result) => {
+        User.findOne({"email": {$eq: username}}).exec().then((result) => {
 
             if (!result) {
 
