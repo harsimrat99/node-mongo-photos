@@ -102,7 +102,7 @@ router.post('/delete', ensureAuthenticated,(req, res) => {
   try {
     var id = req.body.photo_id;
    
-    datas = Photos.remove({ "_id" : id }).then((data) => {
+    datas = Photos.remove({ "_id" : {$eq : id} }).then((data) => {
       res.redirect('/photos/show')          
     })  
   } catch(e) {
@@ -118,7 +118,7 @@ router.post('/deleteList', ensureAuthenticated,(req, res) => {
   try {
     var id = req.body.photo_id;
    
-    datas = Photos.remove({ "_id" : id }).then((data) => {
+    datas = Photos.remove({ "_id" : {$eq : id} }).then((data) => {
       res.redirect('/photos/showAll')          
     })  
   } catch(e) {

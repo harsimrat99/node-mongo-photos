@@ -8,17 +8,16 @@ const Photos = require('../models/Photos');
 const jwt = require('jsonwebtoken')
 const User = require('../models/User');
 const multer = require('multer');
-const { forwardAuthenticated } = require('../config/auth');
+const {forwardAuthenticated} = require('../config/auth');
 
 var storage = multer.memoryStorage()
-var upload = multer({ storage: storage })
+var upload = multer({storage: storage})
 
 // Login
 router.post('/login', (req, res, next) => {
 
     username = req.body.username;
     password = req.body.password;
-
 
 
     try {
@@ -33,26 +32,25 @@ router.post('/login', (req, res, next) => {
 
         }
 
-        User.findOne({ "email": username }).exec().then((result) => {
+        User.findOne({"email": {$eq:username}}).exec().then((result) => {
 
             if (!result) {
 
-                res.status(401).json({ "error": "User not found." })
+                res.status(401).json({"error": "User not found."})
 
             } else {
 
-                bcryptjs.compare(password, result.password, function(err, bunty) {
+                bcryptjs.compare(password, result.password, function (err, bunty) {
 
                     if (bunty) {
 
 
-
                         res.json({
-                            "token": jwt.sign({ user: result._id }, process.env.SECRET, { expiresIn: 86400 })
+                            "token": jwt.sign({user: result._id}, process.env.SECRET, {expiresIn: 86400})
                         })
                     } else {
 
-                        res.status(401).json({ "error": "Could not authenticate." })
+                        res.status(401).json({"error": "Could not authenticate."})
 
                     }
 
@@ -62,7 +60,6 @@ router.post('/login', (req, res, next) => {
         });
 
     } catch (e) {
-
 
 
     }
@@ -92,7 +89,7 @@ router.post('/create', upload.single('imageFile'), authenticateToken, (req, res)
         .resize(160, 120).toBuffer().then((e) => {
 
             const data = Buffer.from(e).toString("base64");
-            const img = new Photos({ data, user });
+            const img = new Photos({data, user});
 
             img.save()
                 .then(img => {
@@ -100,7 +97,7 @@ router.post('/create', upload.single('imageFile'), authenticateToken, (req, res)
                         'success_msg',
                         'Your image has been saved.'
                     );
-                    res.status(200).json({ "Success": "Image saved." })
+                    res.status(200).json({"Success": "Image saved."})
                 })
                 .catch(err => console.log(err));
 

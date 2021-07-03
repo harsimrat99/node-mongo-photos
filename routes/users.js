@@ -38,7 +38,7 @@ router.post('/register', (req, res) => {
       password2
     });
   } else {
-    User.findOne({ email: email }).then(user => {
+    User.findOne({ email: {$eq: email} }).then(user => {
       if (user) {
         errors.push({ msg: 'Email already exists' });
         res.render('register', {

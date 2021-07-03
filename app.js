@@ -6,6 +6,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 var morgan = require('morgan')
 const redis = require('redis')
+const csrf = require('csrf');
 
 var RedisStore = require('connect-redis')(session)
 var redisClient = redis.createClient({
@@ -23,6 +24,13 @@ require('./config/passport')(passport);
 
 // DB Config
 var uri = process.env.URI_MONGO
+
+// set up rate limiter: maximum of five requests per minute
+var RateLimit = require('express-rate-limit');
+var limiter = new RateLimit({
+    windowMs: 1*60*1000, // 1 minute
+    max: 5
+});
 
 // Connect to MongoDB
 mongoose
