@@ -58,8 +58,7 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
 
 // UserName
 router.get('/u/:name', (req, res) => {
-    res.render('u', {'name': req.params.name}, {dashboard: true})
-    console.log(req.params.name);
+    return res.render('u', {'name': req.params.name, dashboard:true})
 });
 
 router.get('/compile', (req, res) => {
