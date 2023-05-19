@@ -11,7 +11,7 @@ const csrf = require('csrf');
 var RedisStore = require('connect-redis')(session)
 var redisClient = redis.createClient({
     host: process.env.HOST_REDIS,
-    port: '18438',
+    port: process.env.REDIS_PORT,
     password: process.env.PASSWORD_REDIS
 });
 
