@@ -16,4 +16,12 @@ RUN npm install
 COPY . .
 
 EXPOSE 8080
-CMD [ "node", "server.js" ]
+ENV SECRET=""
+ENV REDIS_PORT=""
+ENV DEBUG=""
+ENV URI_MONGO=""
+ENV PASSWORD_REDIS=""
+ENV PORT=""
+ENV SECRET_SESSION=""
+ENV HOST_REDIS=""
+CMD [ "node", "app.js" ]
